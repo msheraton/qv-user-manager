@@ -1,9 +1,23 @@
 qv-user-manager
 ===============
 
-This tool allows you to retrieve information about assigned Named and Document CAL's as well as DMS user authorization in QlikView.
+This tool allows you to retrieve information about assigned Named CAL's and Document CAL's as well as DMS user authorization for your QlikView Servers.
 
-It also allows you to populate DMS users in various ways.
+It also allows you to populate DMS with users in various ways.
+
+Configuration
+-------------
+
+Add the user that is executing the tool to the "QlikView Management API" Windows group. If the group does not exist, it must be created.
+
+Change the line below in qv-user-manager.exe.config file to reflect the servername of your QlikView Management Service (QMS).
+
+ 	<endpoint address="http://sesth-rfn1:4799/QMS/Service" binding="basicHttpBinding"
+ 	bindingConfiguration="BasicHttpBinding_IQMSBackend" contract="QMSBackendService.IQMSBackend"
+ 	name="BasicHttpBinding_IQMSBackend" behaviorConfiguration="ServiceKeyEndpointBehavior" />
+
+Examples
+--------
 
 Examples for populating DMS users:
 
@@ -33,3 +47,10 @@ Example for listing CAL's:
 
 	:: List Named CALs and DocumentCAL's on all available QVS to a semicolon separated file
 	qv-user-manager.exe --list cal > cals.csv
+
+Meta
+----
+
+* Code: `git clone git://github.com/braathen/qv-user-manager.git`
+* Home: <https://github.com/braathen/qv-user-manager>
+* Bugs: <https://github.com/braathen/qv-user-manager/issues>
