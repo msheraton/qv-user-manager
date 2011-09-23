@@ -44,10 +44,13 @@ namespace qv_user_manager
 
                 if (version)
                 {
-                    Console.WriteLine("qv-user-manager version 0.1.0 (22 September 2011)");
+                    Console.WriteLine("qv-user-manager version 0.1.0 (23 September 2011)\n");
                     Console.WriteLine("This program comes with ABSOLUTELY NO WARRANTY.");
                     Console.WriteLine("This is free software, and you are welcome to redistribute it");
                     Console.WriteLine("under certain conditions.\n");
+                    Console.WriteLine("Code: git clone git://github.com/braathen/qv-user-manager.git");
+                    Console.WriteLine("Home: <https://github.com/braathen/qv-user-manager>");
+                    Console.WriteLine("Bugs: <https://github.com/braathen/qv-user-manager/issues>");
                     return;
                 }
             }

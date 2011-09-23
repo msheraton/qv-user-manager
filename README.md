@@ -1,20 +1,24 @@
 qv-user-manager
 ===============
 
-This tool allows you to retrieve information about assigned Named CAL's and Document CAL's as well as DMS user authorization for your QlikView Servers.
+qv-user-manager for QlikView 10 allows you to retrieve information about assigned Named CAL's and Document CAL's as well as DMS user authorization for your QlikView Servers.
 
-It also allows you to populate DMS with users in various ways.
+It also allows you to populate DMS with users in various ways, which can be useful in some DMZ solutions where for example QlikView Publisher is not allowed to handle the distribution.
+
+This project aims to both demonstrate and inspire how to work with the QlikView QMS API while at the same time being useful and a fully working example of what can be accomplished.
 
 Configuration
 -------------
 
 Add the user that is executing the tool to the "QlikView Management API" Windows group. If the group does not exist, it must be created.
 
-Change the line below in qv-user-manager.exe.config file to reflect the servername of your QlikView Management Service (QMS).
+Change the line below in qv-user-manager.exe.config file to reflect the server address of your QlikView Management Service (QMS).
 
  	<endpoint address="http://sesth-rfn1:4799/QMS/Service" binding="basicHttpBinding"
  	bindingConfiguration="BasicHttpBinding_IQMSBackend" contract="QMSBackendService.IQMSBackend"
  	name="BasicHttpBinding_IQMSBackend" behaviorConfiguration="ServiceKeyEndpointBehavior" />
+
+It's recommended to schedule and run the tool from a batch file, see below for examples. 
 
 Examples
 --------
@@ -47,6 +51,20 @@ Example for listing CAL's:
 
 	:: List Named CALs and DocumentCAL's on all available QVS to a semicolon separated file
 	qv-user-manager.exe --list cal > cals.csv
+
+Example how to run from a QliKView script:
+
+	EXECUTE cmd.exe /C "qv-user-manager.exe --list cal > cals.csv"; 
+
+	Directory;
+	LOAD UserName, 
+     	LastUsed, 
+     	QuarantinedUntil,
+     	Document,
+     	Server
+	FROM
+	cals.csv
+	(txt, codepage is 1252, embedded labels, delimiter is ';', msq);
 
 Meta
 ----

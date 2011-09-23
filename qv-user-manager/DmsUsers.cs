@@ -14,7 +14,8 @@ namespace qv_user_manager
                 string line;
                 while ((line = r.ReadLine()) != null)
                 {
-                    lines.Add(line);
+                    if(line.Trim() != "")
+                        lines.Add(line.Trim());
                 }
             }
             return lines;
