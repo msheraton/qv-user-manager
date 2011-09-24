@@ -12,8 +12,7 @@ namespace qv_user_manager
             var add = "";
             var remove = "";
             var documents = new List<string>();
-            var users = new List<string>();
-            var input = "";
+            var prefix = "";
             var version = false;
             var help = false;
 
@@ -24,8 +23,7 @@ namespace qv_user_manager
                     { "a|add=", "Add users or assign CALs from --input {CAL|DMS}", v => add = v.ToLower() },
                     { "r|remove=", "Remove users or inactive CALs {CAL|DMS}", v => remove = v.ToLower() },
                     { "d|document=", "Document to perform DMS actions on", v => documents.Add(v.ToLower()) },
-                    { "i|input=", "Input file to read usernames from", v => input = v },
-                    { "u|user=", "Username to be added to DMS", v => users.Add(v) },
+                    { "p|prefix=", "Use specified prefix for all users or CAL's", v => prefix = v },
                     { "V|version", "Show version information", v => version = v != null },
                     { "?|h|help", "Show usage information", v => help = v != null },
                 };
@@ -62,10 +60,19 @@ namespace qv_user_manager
                 return;
             }
 
-            if (!String.IsNullOrEmpty(input))
+            // Look for console redirection or piped data
+            var users = new List<string>();
+            try
             {
-                var dmsUsers = new DmsUsers();
-                users = dmsUsers.GetUsersFromFile(input);
+                var isKeyAvailable = System.Console.KeyAvailable;
+            }
+            catch (InvalidOperationException)
+            {
+                string s;
+                while ((s = Console.ReadLine()) != null)
+                {
+                    users.Add(prefix + s.Trim());
+                }
             }
 
             switch (list)
@@ -98,8 +105,6 @@ namespace qv_user_manager
                     RemoveCals();
                     break;
             }
-
-        
         }
     }
 }

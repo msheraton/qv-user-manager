@@ -1,1 +1,5 @@
--Added possibility to remove specified DMS users and inactive CAL's (inactive for > 30 days)
+2011-09-24
+----------
+-Introduced --prefix parameter for all usernames and CAL's.
+-Removed --input and --user parameters, using console redirection or pipes to read data instead (see examples).
+-Added possibility to remove specified DMS users and inactive CAL's (inactive for > 30 days).

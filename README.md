@@ -26,16 +26,16 @@ Examples
 Examples for populating DMS users:
 
 	:: Add DMS users to Films.qvw from a textfile containing users
-	qv-user-manager.exe --add dms --document Films.qvw --input C:\Temp\Users.txt
+	qv-user-manager.exe --add dms --document Films.qvw < C:\Temp\users.txt
 
 	:: Add DMS users to Films.qvw AND Presidents.qvw from a textfile containing users
-	qv-user-manager.exe --add dms --document Films.qvw --document Presidents.qvw --input C:\Temp\Users.txt
+	qv-user-manager.exe --add dms --document Films.qvw --document Presidents.qvw < C:\Temp\users.txt
 
 	:: Add DMS users to all available documents from a textfile containing users
-	qv-user-manager.exe --add dms --input C:\Temp\Users.txt
+	qv-user-manager.exe --add dms < C:\Temp\users.txt
 
-	:: Add DMS users to all available documents where users are specified as parameter(s)
-	qv-user-manager.exe --add dms --user rikard --user magnus --user mats
+	:: Add DMS users to all available documents where a user is specified on commandline and prefixed
+	echo rfn | qv-user-manager.exe --add dms --prefix QTSEL\
 
 Examples for listing DMS users:
 
@@ -48,13 +48,13 @@ Examples for listing DMS users:
 Examples for removing DMS users:
 
 	:: Remove DMS users for all documents on all available QVS matching usernames in a textfile
-	qv-user-manager.exe --remove dms --input C:\Temp\Users.txt
-
-	:: Remove DMS users for Films.qvw on all available QVS where users are specified as parameters
-	qv-user-manager.exe --remove dms --document Films.qvw --user rikard --user magnus
+	qv-user-manager.exe --remove dms < C:\Temp\Users.txt
 
 	:: Remove ALL DMS users for all documents on all available QVS
 	qv-user-manager.exe --remove dms
+
+	:: Remove DMS users for Films.qvw on all available QVS where a user is specified as parameter
+	echo rfn | qv-user-manager.exe --remove dms --document Films.qvw
 
 Example for listing CAL's:
 

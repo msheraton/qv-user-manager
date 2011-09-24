@@ -80,7 +80,6 @@
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DmsUsers.cs" />
     <Compile Include="RemoveCals.cs" />
     <Compile Include="RemoveDms.cs" />
     <Compile Include="Service References\QMSBackendService\Reference.cs">
