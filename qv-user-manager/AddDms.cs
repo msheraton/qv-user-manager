@@ -29,6 +29,7 @@ namespace qv_user_manager
                     // Loop through available documents
                     foreach (var docNode in userDocuments)
                     {
+                        // Continue if no matching documents
                         if (documents.Count != 0 && !documents.Contains(docNode.Name.ToLower())) continue;
 
                         // Get authorization metadata

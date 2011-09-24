@@ -32,7 +32,7 @@ namespace qv_user_manager
                     {
                         if (documents.Count != 0 && !documents.Contains(docNode.Name.ToLower())) continue;
 
-                        // Get authorization metadata
+                        // Get authorization meta data
                         var metaData = backendClient.GetDocumentMetaData(docNode, DocumentMetaDataScope.Authorization);
 
                         foreach (var user in metaData.Authorization.Access)

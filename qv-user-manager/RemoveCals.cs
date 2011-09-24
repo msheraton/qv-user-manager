@@ -32,21 +32,18 @@ namespace qv_user_manager
                     // Get CAL configuration
                     var config = backendClient.GetCALConfiguration(server.ID, CALConfigurationScope.NamedCALs);
 
-                    // Get assigned NamedCALs
-                    var assignedCal = config.NamedCALs.AssignedCALs;
-
                     // Get number of users BEFORE modifications
-                    var numberOfUsers = assignedCal.Count;
+                    var numberOfUsers = config.NamedCALs.AssignedCALs.Count;
 
                     // Iterate through all CAL's and remove the inactive ones
-                    foreach (var c in assignedCal.ToList().Where(namedCal => namedCal.LastUsed.Year > 0001 && namedCal.LastUsed.CompareTo(DateTime.UtcNow.AddDays(days)) == -1))
+                    foreach (var c in config.NamedCALs.AssignedCALs.ToList().Where(u => u.LastUsed.Year > 0001 && u.LastUsed.CompareTo(DateTime.UtcNow.AddDays(days)) == -1))
                         config.NamedCALs.AssignedCALs.Remove(c);
  
                     // Save changes
                     backendClient.SaveCALConfiguration(config);
 
                     // Get number of users BEFORE modifications
-                    var removedUsers = numberOfUsers - assignedCal.Count;
+                    var removedUsers = numberOfUsers - config.NamedCALs.AssignedCALs.Count;
 
                     if (removedUsers > 0)
                         Console.WriteLine(String.Format("Removed {0} CAL's on {1}", removedUsers, server.Name));
@@ -60,13 +57,14 @@ namespace qv_user_manager
 
                     foreach (var docNode in userDocuments)
                     {
+                        // Get licensing meta data
                         var metaData = backendClient.GetDocumentMetaData(docNode, DocumentMetaDataScope.Licensing);
 
                         // Get number of users BEFORE modifications
                         numberOfUsers = metaData.Licensing.AssignedCALs.Count;
 
-                        // Remove matching users
-                        foreach (var c in metaData.Licensing.AssignedCALs.ToList().Where(namedCal => namedCal.LastUsed.Year > 0001 && namedCal.LastUsed.CompareTo(DateTime.UtcNow.AddDays(days)) == -1))
+                        // Iterate through all CAL's and remove the inactive ones
+                        foreach (var c in metaData.Licensing.AssignedCALs.ToList().Where(u => u.LastUsed.Year > 0001 && u.LastUsed.CompareTo(DateTime.UtcNow.AddDays(days)) == -1))
                             metaData.Licensing.AssignedCALs.Remove(c);
 
                         // Save changes

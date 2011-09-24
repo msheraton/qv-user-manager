@@ -26,10 +26,8 @@ namespace qv_user_manager
                     // Get Named CALs
                     var config = backendClient.GetCALConfiguration(server.ID, CALConfigurationScope.NamedCALs);
 
-                    var assignedCal = config.NamedCALs.AssignedCALs;
-
-                    foreach (var namedCal in assignedCal)
-                        Console.WriteLine(String.Format("{0};{1};{2};{3};{4}", namedCal.UserName, namedCal.LastUsed.ToString().Replace("0001-01-01 00:00:00", ""), namedCal.QuarantinedUntil.ToString().Replace("0001-01-01 00:00:00", ""), "", server.Name));
+                    foreach (var c in config.NamedCALs.AssignedCALs)
+                        Console.WriteLine(String.Format("{0};{1};{2};{3};{4}", c.UserName, c.LastUsed.Year > 0001 ? c.LastUsed.ToString() : "", c.QuarantinedUntil.Year > 0001 ? c.QuarantinedUntil.ToString() : "", "", server.Name));
 
                     // Get Document CAL's
                     var userDocuments = backendClient.GetUserDocuments(server.ID);
@@ -38,8 +36,8 @@ namespace qv_user_manager
                     {
                         var metaData = backendClient.GetDocumentMetaData(docNode, DocumentMetaDataScope.Licensing);
 
-                        foreach (var namedCal in metaData.Licensing.AssignedCALs)
-                            Console.WriteLine(String.Format("{0};{1};{2};{3};{4}", namedCal.UserName, namedCal.LastUsed.ToString().Replace("0001-01-01 00:00:00", ""), namedCal.QuarantinedUntil.ToString().Replace("0001-01-01 00:00:00", ""), docNode.Name, server.Name));
+                        foreach (var c in metaData.Licensing.AssignedCALs)
+                          Console.WriteLine(String.Format("{0};{1};{2};{3};{4}", c.UserName, c.LastUsed.Year > 0001 ? c.LastUsed.ToString() : "", c.QuarantinedUntil.Year > 0001 ? c.QuarantinedUntil.ToString() : "", docNode.Name, server.Name));
                     }
                 }
             }
@@ -47,7 +45,6 @@ namespace qv_user_manager
             {
                 Console.WriteLine("An exception occurred: " + ex.Message);
             }
-
         }
     }
 }

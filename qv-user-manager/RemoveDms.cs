@@ -32,6 +32,7 @@ namespace qv_user_manager
                     // Loop through available documents
                     foreach (var docNode in userDocuments)
                     {
+                        // Continue if no matching documents
                         if (documents.Count != 0 && !documents.Contains(docNode.Name.ToLower())) continue;
 
                         // Get authorization metadata
@@ -56,7 +57,8 @@ namespace qv_user_manager
                         // Get number of users AFTER modifications
                         var removedUsers = numberOfUsers - metaData.Authorization.Access.Count;
 
-                        Console.WriteLine(String.Format("Removed {0} users from '{1}' on {2}", removedUsers, docNode.Name, server.Name));
+                        if (removedUsers > 0)
+                            Console.WriteLine(String.Format("Removed {0} users from '{1}' on {2}", removedUsers, docNode.Name, server.Name));
                     }
                 }
             }
