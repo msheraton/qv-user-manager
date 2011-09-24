@@ -7,7 +7,7 @@ namespace qv_user_manager
 {
     partial class Program
     {
-        static void AddDms(ICollection<string> documents, ICollection<string> users)
+        static void RemoveDms(ICollection<string> documents, List<string> users)
         {
             try
             {
@@ -19,6 +19,9 @@ namespace qv_user_manager
 
                 // Get available QlikView Servers
                 var serviceList = backendClient.GetServices(ServiceTypes.QlikViewServer);
+
+                // Convert all usernames to lowercase
+                users = users.ConvertAll(d => d.ToLower());
 
                 // Loop through available servers
                 foreach (var server in serviceList)
@@ -34,32 +37,26 @@ namespace qv_user_manager
                         // Get authorization metadata
                         var metaData = backendClient.GetDocumentMetaData(docNode, DocumentMetaDataScope.Authorization);
 
-                        // Get number of users on each document
+                        // Get number of users BEFORE modifications
                         var numberOfUsers = metaData.Authorization.Access.Count;
 
-                        // Remove all current users before adding new ones
-                        if (numberOfUsers > 0)
-                        {
+                        if (users.Count == 0)
+                            // Remove all users if no users were specified
                             metaData.Authorization.Access.RemoveRange(0, numberOfUsers);
-
-                            Console.WriteLine(String.Format("Removed {0} users from '{1}' on {2}", numberOfUsers, docNode.Name, server.Name));
-                        }
-
-                        // Add new users
-                        foreach (var newUser in users.Select(u => new DocumentAccessEntry
+                        else
                         {
-                            UserName = u,
-                            AccessMode = DocumentAccessEntryMode.Always,
-                            DayOfWeekConstraints = new List<DayOfWeek>()
-                        }))
-                        {
-                            metaData.Authorization.Access.Add(newUser);
+                            // Remove matching users
+                            foreach (var u in metaData.Authorization.Access.ToList().Where(u => users.Contains(u.UserName.ToLower())))
+                                metaData.Authorization.Access.Remove(u);
                         }
 
                         // Save changes
                         backendClient.SaveDocumentMetaData(metaData);
 
-                        Console.WriteLine(String.Format("Added {0} users to '{1}' on {2}", users.Count, docNode.Name, server.Name));
+                        // Get number of users AFTER modifications
+                        var removedUsers = numberOfUsers - metaData.Authorization.Access.Count;
+
+                        Console.WriteLine(String.Format("Removed {0} users from '{1}' on {2}", removedUsers, docNode.Name, server.Name));
                     }
                 }
             }

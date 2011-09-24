@@ -5,7 +5,7 @@ namespace qv_user_manager
 {
     class DmsUsers
     {
-        public ICollection<string> GetUsersFromFile(string file)
+        public List<string> GetUsersFromFile(string file)
         {
             var lines = new List<string>();
 

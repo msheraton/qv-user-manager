@@ -10,6 +10,7 @@ namespace qv_user_manager
         {
             var list = "";
             var add = "";
+            var remove = "";
             var documents = new List<string>();
             var users = new List<string>();
             var input = "";
@@ -21,6 +22,7 @@ namespace qv_user_manager
                 var p = new OptionSet {
                     { "l|list=", "List CALs or usernames to console {CAL|DMS}", v => list = v.ToLower() },
                     { "a|add=", "Add users or assign CALs from --input {CAL|DMS}", v => add = v.ToLower() },
+                    { "r|remove=", "Remove users or inactive CALs {CAL|DMS}", v => remove = v.ToLower() },
                     { "d|document=", "Document to perform DMS actions on", v => documents.Add(v.ToLower()) },
                     { "i|input=", "Input file to read usernames from", v => input = v },
                     { "u|user=", "Username to be added to DMS", v => users.Add(v) },
@@ -44,7 +46,7 @@ namespace qv_user_manager
 
                 if (version)
                 {
-                    Console.WriteLine("qv-user-manager version 0.1.0 (23 September 2011)\n");
+                    Console.WriteLine("qv-user-manager 20110924\n");
                     Console.WriteLine("This program comes with ABSOLUTELY NO WARRANTY.");
                     Console.WriteLine("This is free software, and you are welcome to redistribute it");
                     Console.WriteLine("under certain conditions.\n");
@@ -60,6 +62,12 @@ namespace qv_user_manager
                 return;
             }
 
+            if (!String.IsNullOrEmpty(input))
+            {
+                var dmsUsers = new DmsUsers();
+                users = dmsUsers.GetUsersFromFile(input);
+            }
+
             switch (list)
             {
                 case "dms":
@@ -73,21 +81,25 @@ namespace qv_user_manager
             switch (add)
             {
                 case "dms":
-                    if (!String.IsNullOrEmpty(input))
-                    {
-                        var dmsUsers = new DmsUsers();
-                        AddDms(documents, dmsUsers.GetUsersFromFile(input));
-                    }
-                    else if(users.Count > 0)
-                    {
-                        AddDms(documents, users);
-                    }
+                    AddDms(documents, users);
                     break;
                 case "cal":
-                    //AddCal(input);
+                    //AddCals(input);
                     Console.WriteLine("Adding of CAL's is not supported yet");
                     break;
             }
+
+            switch (remove)
+            {
+                case "dms":
+                    RemoveDms(documents, users);
+                    break;
+                case "cal":
+                    RemoveCals();
+                    break;
+            }
+
+        
         }
     }
 }

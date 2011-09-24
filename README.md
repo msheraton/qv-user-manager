@@ -37,7 +37,6 @@ Examples for populating DMS users:
 	:: Add DMS users to all available documents where users are specified as parameter(s)
 	qv-user-manager.exe --add dms --user rikard --user magnus --user mats
 
-
 Examples for listing DMS users:
 
 	:: List DMS users for all documents on all available QVS to a semicolon separated file
@@ -46,11 +45,26 @@ Examples for listing DMS users:
 	:: List DMS users for Films.qvw on all available QVS to a semicolon separated file
 	qv-user-manager.exe --list dms --document Films.qvw > dmsusers.csv
 
+Examples for removing DMS users:
+
+	:: Remove DMS users for all documents on all available QVS matching usernames in a textfile
+	qv-user-manager.exe --remove dms --input C:\Temp\Users.txt
+
+	:: Remove DMS users for Films.qvw on all available QVS where users are specified as parameters
+	qv-user-manager.exe --remove dms --document Films.qvw --user rikard --user magnus
+
+	:: Remove ALL DMS users for all documents on all available QVS
+	qv-user-manager.exe --remove dms
 
 Example for listing CAL's:
 
 	:: List Named CALs and DocumentCAL's on all available QVS to a semicolon separated file
 	qv-user-manager.exe --list cal > cals.csv
+
+Example for removing CAL's:
+
+	:: Remove all inactive CAL's (inactive > 30 days)
+	qv-user-manager.exe --remove cal
 
 Example how to run from a QliKView script:
 
