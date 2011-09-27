@@ -5,14 +5,31 @@ qv-user-manager for QlikView 10 allows you to retrieve information about assigne
 
 It also allows you to populate DMS with users in various ways, which can be useful in some DMZ solutions where for example QlikView Publisher is not allowed to handle the distribution.
 
-This project aims to both demonstrate and inspire how to work with the QlikView QMS API while at the same time being useful and a fully working example of what can be accomplished.
+This project aims to both demonstrate and inspire how to work with the QlikView Management Service (QMS) API while at the same time being useful and a fully working example of what can be accomplished.
+
+Help screen
+-----------
+
+	Usage: qv-user-manager [options]
+	Handles QlikView CALs and DMS user authorizations.
+
+	Options:
+	  -l, --list=CAL|DMS         List CALs or usernames to console [CAL|DMS]
+	  -a, --add=CAL|DMS          Add users or assign CALs from --input [CAL|DMS]
+	  -r, --remove=CAL|DMS       Remove users or inactive CALs [CAL|DMS]
+	  -d, --document=VALUE       Document to perform DMS actions on
+	  -p, --prefix=VALUE         Use specified prefix for all users or CAL's
+	  -V, --version              Show version information
+	  -?, -h, --help             Show usage information
+
+	Options can be in the form -option, /option or --long-option
 
 Configuration
 -------------
 
-Add the user that is executing the tool to the "QlikView Management API" Windows group. If the group does not exist, it must be created.
+Add the user that is executing the tool to the "QlikView Management API" Windows group. This group does not exist by default and must therefore be created.
 
-Change the line below in qv-user-manager.exe.config file to reflect the server address of your QlikView Management Service (QMS).
+Change the line below in qv-user-manager.exe.config file to reflect the server address of your QlikView Management Service.
 
  	<endpoint address="http://sesth-rfn1:4799/QMS/Service" binding="basicHttpBinding"
  	bindingConfiguration="BasicHttpBinding_IQMSBackend" contract="QMSBackendService.IQMSBackend"
@@ -65,6 +82,18 @@ Example for removing CAL's:
 
 	:: Remove all inactive CAL's (inactive > 30 days)
 	qv-user-manager.exe --remove cal
+
+PowerShell examples:
+
+	:: Add users from Active Directory (if necessary edit the filter in the script file)
+	.\extras\get-adusers.ps1 LDAP://OU=Stockholm,DC=qliktech,DC=com | qv-user-manager.exe --add dms --document Films.qvw --prefix QTSEL\
+
+	:: Add users from an SQL Server (edit connection string in the script file)
+	.\extras\get-sqlusers.ps1 "SELECT users FROM table" | qv-user-manager.exe --add dms --document Films.qvw --prefix QTSEL\
+
+Note: By default PowerShell has scripting support disabled. To change the script execution policy, use the Set-ExecutionPolicy cmdlet and change it to 'unrestricted'. See the link below for more detailed instructions.
+
+<http://www.tech-recipes.com/rx/2513/powershell_enable_script_support/>
 
 Example how to run from a QliKView script:
 

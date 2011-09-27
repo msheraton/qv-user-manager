@@ -19,9 +19,9 @@ namespace qv_user_manager
             try
             {
                 var p = new OptionSet {
-                    { "l|list=", "List CALs or usernames to console {CAL|DMS}", v => list = v.ToLower() },
-                    { "a|add=", "Add users or assign CALs from --input {CAL|DMS}", v => add = v.ToLower() },
-                    { "r|remove=", "Remove users or inactive CALs {CAL|DMS}", v => remove = v.ToLower() },
+                    { "l|list=", "List CALs or usernames to console [{CAL|DMS}]", v => list = v.ToLower() },
+                    { "a|add=", "Add users or assign CALs from --input [{CAL|DMS}]", v => add = v.ToLower() },
+                    { "r|remove=", "Remove users or inactive CALs [{CAL|DMS}]", v => remove = v.ToLower() },
                     { "d|document=", "Document to perform DMS actions on", v => documents.Add(v.ToLower()) },
                     { "p|prefix=", "Use specified prefix for all users or CAL's", v => prefix = v },
                     { "V|version", "Show version information", v => version = v != null },
@@ -75,36 +75,20 @@ namespace qv_user_manager
                 }
             }
 
-            switch (list)
-            {
-                case "dms":
-                    ListDms(documents);
-                    break;
-                case "cal":
-                    ListCals();
-                    break;
-            }
+            if (list == "dms")
+                ListDms(documents);
+            else
+                ListCals();
 
-            switch (add)
-            {
-                case "dms":
-                    AddDms(documents, users);
-                    break;
-                case "cal":
-                    //AddCals(input);
-                    Console.WriteLine("Adding of CAL's is not supported yet");
-                    break;
-            }
+            if (add == "dms")
+                AddDms(documents, users);
+            else
+                Console.WriteLine("Adding of CAL's is not supported yet");
 
-            switch (remove)
-            {
-                case "dms":
-                    RemoveDms(documents, users);
-                    break;
-                case "cal":
-                    RemoveCals();
-                    break;
-            }
+            if (remove == "dms")
+                RemoveDms(documents, users);
+            else
+                RemoveCals();
         }
     }
 }
