@@ -46,7 +46,7 @@ namespace qv_user_manager
                     var removedUsers = numberOfUsers - config.NamedCALs.AssignedCALs.Count;
 
                     if (removedUsers > 0)
-                        Console.WriteLine(String.Format("Removed {0} CAL's on {1}", removedUsers, server.Name));
+                        Console.WriteLine(String.Format("Removed {0} CALs on {1}", removedUsers, server.Name));
 
                     /**********************
                      *   DOCUMENT CALS
@@ -74,13 +74,13 @@ namespace qv_user_manager
                         removedUsers = numberOfUsers - metaData.Licensing.AssignedCALs.Count;
 
                         if (removedUsers > 0)
-                            Console.WriteLine(String.Format("Removed {0} DocumentCAL's from '{1}' on {2}", removedUsers, docNode.Name, server.Name));
+                            Console.WriteLine(String.Format("Removed {0} Document CALs from '{1}' on {2}", removedUsers, docNode.Name, server.Name));
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An exception occurred: " + ex.Message);
+                Console.WriteLine(ex.Message);
             }
 
         }

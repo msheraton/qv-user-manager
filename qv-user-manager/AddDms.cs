@@ -47,14 +47,14 @@ namespace qv_user_manager
                         }
 
                         // Add new users
-                        foreach (var newUser in users.Select(u => new DocumentAccessEntry
+                        foreach (var user in users.Select(u => new DocumentAccessEntry
                         {
                             UserName = u,
                             AccessMode = DocumentAccessEntryMode.Always,
                             DayOfWeekConstraints = new List<DayOfWeek>()
                         }))
                         {
-                            metaData.Authorization.Access.Add(newUser);
+                            metaData.Authorization.Access.Add(user);
                         }
 
                         // Save changes
@@ -66,7 +66,7 @@ namespace qv_user_manager
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An exception occurred: " + ex.Message);
+                Console.WriteLine(ex.Message);
             }
 
         }

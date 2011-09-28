@@ -1,7 +1,7 @@
 qv-user-manager
 ===============
 
-qv-user-manager for QlikView 10 allows you to retrieve information about assigned Named CAL's and Document CAL's as well as DMS user authorization for your QlikView Servers.
+qv-user-manager for QlikView 10 allows you to retrieve information about assigned Named CALs and Document CALs as well as DMS user authorization for your QlikView Servers.
 
 It also allows you to populate DMS with users in various ways, which can be useful in some DMZ solutions where for example QlikView Publisher is not allowed to handle the distribution.
 
@@ -16,9 +16,9 @@ Help screen
 	Options:
 	  -l, --list=CAL|DMS         List CALs or usernames to console [CAL|DMS]
 	  -a, --add=CAL|DMS          Add users or assign CALs from --input [CAL|DMS]
-	  -r, --remove=CAL|DMS       Remove users or inactive CALs [CAL|DMS]
-	  -d, --document=VALUE       Document to perform DMS actions on
-	  -p, --prefix=VALUE         Use specified prefix for all users or CAL's
+	  -r, --remove=CAL|DMS       Remove specified users or inactive CALs [CAL|DMS]
+	  -d, --document=VALUE       QlikView document(s) to perform actions on
+	  -p, --prefix=VALUE         Use specified prefix for all users and CALs
 	  -V, --version              Show version information
 	  -?, -h, --help             Show usage information
 
@@ -73,23 +73,23 @@ Examples for removing DMS users:
 	:: Remove DMS users for Films.qvw on all available QVS where a user is specified as parameter
 	echo rfn | qv-user-manager.exe --remove dms --document Films.qvw
 
-Example for listing CAL's:
+Example for listing CALs:
 
-	:: List Named CALs and DocumentCAL's on all available QVS to a semicolon separated file
+	:: List Named CALs and DocumentCALs on all available QVS to a semicolon separated file
 	qv-user-manager.exe --list cal > cals.csv
 
-Example for removing CAL's:
+Example for removing CALs:
 
-	:: Remove all inactive CAL's (inactive > 30 days)
+	:: Remove all inactive CALs (inactive > 30 days)
 	qv-user-manager.exe --remove cal
 
 PowerShell examples:
 
-	:: Add users from Active Directory (if necessary edit the filter in the script file)
-	.\extras\get-adusers.ps1 LDAP://OU=Stockholm,DC=qliktech,DC=com | qv-user-manager.exe --add dms --document Films.qvw --prefix QTSEL\
+	:: Add CALs from Active Directory (edit the filter in the script file if necessary)
+	.\extras\get-adusers.ps1 "LDAP://OU=Stockholm,DC=qliktech,DC=com" | .\qv-user-manager.exe --add cal --prefix QTSEL\
 
-	:: Add users from an SQL Server (edit connection string in the script file)
-	.\extras\get-sqlusers.ps1 "SELECT users FROM table" | qv-user-manager.exe --add dms --document Films.qvw --prefix QTSEL\
+	:: Add CALs from an SQL Server (edit connection string in the script file)
+	.\extras\get-sqlusers.ps1 "SELECT users FROM table" | .\qv-user-manager.exe --add cal --document Films.qvw --prefix QTSEL\
 
 Note: By default PowerShell has scripting support disabled. To change the script execution policy, use the Set-ExecutionPolicy cmdlet and change it to 'unrestricted'. See the link below for more detailed instructions.
 

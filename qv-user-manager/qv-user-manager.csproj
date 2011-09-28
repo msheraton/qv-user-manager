@@ -118,6 +118,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddCals.cs" />
     <Compile Include="AddDms.cs" />
     <Compile Include="ListCals.cs" />
     <Compile Include="ListDms.cs" />

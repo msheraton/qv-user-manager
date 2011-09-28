@@ -21,9 +21,9 @@ namespace qv_user_manager
                 var p = new OptionSet {
                     { "l|list=", "List CALs or usernames to console [{CAL|DMS}]", v => list = v.ToLower() },
                     { "a|add=", "Add users or assign CALs from --input [{CAL|DMS}]", v => add = v.ToLower() },
-                    { "r|remove=", "Remove users or inactive CALs [{CAL|DMS}]", v => remove = v.ToLower() },
-                    { "d|document=", "Document to perform DMS actions on", v => documents.Add(v.ToLower()) },
-                    { "p|prefix=", "Use specified prefix for all users or CAL's", v => prefix = v },
+                    { "r|remove=", "Remove specified users or inactive CALs [{CAL|DMS}]", v => remove = v.ToLower() },
+                    { "d|document=", "QlikView document(s) to perform actions on", v => documents.Add(v.ToLower()) },
+                    { "p|prefix=", "Use specified prefix for all users and CALs", v => prefix = v },
                     { "V|version", "Show version information", v => version = v != null },
                     { "?|h|help", "Show usage information", v => help = v != null },
                 };
@@ -44,7 +44,7 @@ namespace qv_user_manager
 
                 if (version)
                 {
-                    Console.WriteLine("qv-user-manager 20110924\n");
+                    Console.WriteLine("qv-user-manager 20110928\n");
                     Console.WriteLine("This program comes with ABSOLUTELY NO WARRANTY.");
                     Console.WriteLine("This is free software, and you are welcome to redistribute it");
                     Console.WriteLine("under certain conditions.\n");
@@ -60,8 +60,9 @@ namespace qv_user_manager
                 return;
             }
 
-            // Look for console redirection or piped data
             var users = new List<string>();
+
+            // Look for console redirection or piped data
             try
             {
                 var isKeyAvailable = System.Console.KeyAvailable;
@@ -75,20 +76,35 @@ namespace qv_user_manager
                 }
             }
 
-            if (list == "dms")
-                ListDms(documents);
-            else
-                ListCals();
+            switch (remove)
+            {
+                case "dms":
+                    RemoveDms(documents, users);
+                    break;
+                case "cal":
+                    RemoveCals();
+                    break;
+            }
 
-            if (add == "dms")
-                AddDms(documents, users);
-            else
-                Console.WriteLine("Adding of CAL's is not supported yet");
+            switch (add)
+            {
+                case "dms":
+                    AddDms(documents, users);
+                    break;
+                case "cal":
+                    AddCals(documents, users);
+                    break;
+            }
 
-            if (remove == "dms")
-                RemoveDms(documents, users);
-            else
-                RemoveCals();
+            switch (list)
+            {
+                case "dms":
+                    ListDms(documents);
+                    break;
+                case "cal":
+                    ListCals();
+                    break;
+            }
         }
     }
 }

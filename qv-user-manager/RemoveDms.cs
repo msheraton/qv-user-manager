@@ -64,7 +64,7 @@ namespace qv_user_manager
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An exception occurred: " + ex.Message);
+                Console.WriteLine(ex.Message);
             }
 
         }
