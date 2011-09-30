@@ -20,7 +20,7 @@ namespace qv_user_manager
             {
                 var p = new OptionSet {
                     { "l|list=", "List CALs or usernames to console [{CAL|DMS}]", v => list = v.ToLower() },
-                    { "a|add=", "Add users or assign CALs from --input [{CAL|DMS}]", v => add = v.ToLower() },
+                    { "a|add=", "Add users or assign CALs [{CAL|DMS}]", v => add = v.ToLower() },
                     { "r|remove=", "Remove specified users or inactive CALs [{CAL|DMS}]", v => remove = v.ToLower() },
                     { "d|document=", "QlikView document(s) to perform actions on", v => documents.Add(v.ToLower()) },
                     { "p|prefix=", "Use specified prefix for all users and CALs", v => prefix = v },

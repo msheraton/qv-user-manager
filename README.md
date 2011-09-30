@@ -3,7 +3,7 @@ About
 
 qv-user-manager for QlikView 10 is able to automate the process of assigning and removing CALs and retrieve information such as when the CALs were last used in a CSV format, which is simple to read for QlikView. It can also populate DMS users and retrieve information in a similar CSV format. It automatically recognizes all available QlikView Servers and can work against the entire server(s) or specific document(s).
 
-Don't fear the command line! With console redirection and piping support this little tool can with minimal effort be used to for example assign CALs from an Active Directory group or populate DMS users from an SQL Server among other things. See examples below! It's all dynamic and extendable, create your own modules if you whish.
+Don't fear the command line! With console redirection and piping support this little tool can with minimal effort be used to for example assign CALs from an Active Directory group or populate DMS users from an SQL Server among other things. See examples below. It's all dynamic and extendable, create your own modules if you whish.
 
 This project aim to both demonstrate and inspire how to work with the QlikView Management Service (QMS) API while at the same time being a useful and fully working example of what can be done.
 
@@ -15,7 +15,7 @@ Help screen
 
 	Options:
 	  -l, --list=CAL|DMS         List CALs or usernames to console [CAL|DMS]
-	  -a, --add=CAL|DMS          Add users or assign CALs from --input [CAL|DMS]
+	  -a, --add=CAL|DMS          Add users or assign CALs [CAL|DMS]
 	  -r, --remove=CAL|DMS       Remove specified users or inactive CALs [CAL|DMS]
 	  -d, --document=VALUE       QlikView document(s) to perform actions on
 	  -p, --prefix=VALUE         Use specified prefix for all users and CALs
@@ -108,6 +108,11 @@ Example how to run from a QlikView script:
 	FROM
 	cals.csv
 	(txt, codepage is 1252, embedded labels, delimiter is ';', msq);
+
+License
+-------
+
+This software is made available "AS IS" without warranty of any kind under The Mit License (MIT). QlikTech support agreement does not cover support for this software.
 
 Meta
 ----
