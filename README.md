@@ -91,6 +91,9 @@ PowerShell examples:
 	:: Add Document CALs from an SQL Server (edit connection string in the script file)
 	.\extras\get-sqlusers.ps1 "SELECT users FROM table" | .\qv-user-manager.exe --add cal --document Films.qvw --prefix QTSEL\
 
+	:: Populate DMS users from an XML file (edit the script to match XML format)
+	.\extras\get-xmlusers.ps1 .\examples\users-example.xml | .\qv-user-manager.exe --add dms
+
 Note: By default PowerShell has scripting support disabled. To change the script execution policy, use the Set-ExecutionPolicy cmdlet and change it to 'unrestricted'. See the link below for more detailed instructions.
 
 <http://www.tech-recipes.com/rx/2513/powershell_enable_script_support/>
