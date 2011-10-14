@@ -46,7 +46,7 @@ Examples for populating DMS users:
 	qv-user-manager.exe --add dms --document Films.qvw < C:\Temp\users.txt
 
 	:: Add DMS users to Films.qvw AND Presidents.qvw from a textfile containing users
-	qv-user-manager.exe --add dms --document Films.qvw --document Presidents.qvw < C:\Temp\users.txt
+	qv-user-manager.exe --add dms --document Films.qvw;Presidents.qvw < C:\Temp\users.txt
 
 	:: Add DMS users to all available documents from a textfile containing users
 	qv-user-manager.exe --add dms < C:\Temp\users.txt
