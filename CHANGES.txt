@@ -1,3 +1,8 @@
+2011-10-14
+----------
+Adding of DMS users used to remove all existing users first. If this is desired execute with --remove flag first.
+Adding of DMS users now checks if a username exists before adding it.
+
 2011-10-03
 ----------
 Added PowerShell script example for reading usernames from an XML file.

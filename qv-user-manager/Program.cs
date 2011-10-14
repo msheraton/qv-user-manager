@@ -44,7 +44,7 @@ namespace qv_user_manager
 
                 if (version)
                 {
-                    Console.WriteLine("qv-user-manager 20110928\n");
+                    Console.WriteLine("qv-user-manager 20111014\n");
                     Console.WriteLine("This program comes with ABSOLUTELY NO WARRANTY.");
                     Console.WriteLine("This is free software, and you are welcome to redistribute it");
                     Console.WriteLine("under certain conditions.\n");

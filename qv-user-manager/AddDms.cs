@@ -7,7 +7,7 @@ namespace qv_user_manager
 {
     partial class Program
     {
-        static void AddDms(ICollection<string> documents, ICollection<string> users)
+        public static void AddDms(ICollection<string> documents, ICollection<string> users)
         {
             try
             {
@@ -38,14 +38,6 @@ namespace qv_user_manager
                         // Get number of users on each document
                         var numberOfUsers = metaData.Authorization.Access.Count;
 
-                        // Remove all current users before adding new ones
-                        if (numberOfUsers > 0)
-                        {
-                            metaData.Authorization.Access.RemoveRange(0, numberOfUsers);
-
-                            Console.WriteLine(String.Format("Removed {0} users from '{1}' on {2}", numberOfUsers, docNode.Name, server.Name));
-                        }
-
                         // Add new users
                         foreach (var user in users.Select(u => new DocumentAccessEntry
                         {
@@ -54,13 +46,28 @@ namespace qv_user_manager
                             DayOfWeekConstraints = new List<DayOfWeek>()
                         }))
                         {
-                            metaData.Authorization.Access.Add(user);
+                            var exist = false;
+
+                            var dmsuser = metaData.Authorization.Access.ToList();
+
+                            var user1 = user.UserName.ToLower();
+
+                            // Check if the username exists already
+                            foreach (var current in dmsuser.Where(current => current.UserName.ToLower() == user1))
+                                exist = true;
+
+                            if (!exist)
+                                metaData.Authorization.Access.Add(user);
                         }
 
                         // Save changes
                         backendClient.SaveDocumentMetaData(metaData);
 
-                        Console.WriteLine(String.Format("Added {0} users to '{1}' on {2}", users.Count, docNode.Name, server.Name));
+                        // Get number of users AFTER modifications
+                        var addedUsers = metaData.Authorization.Access.Count - numberOfUsers;
+
+                        if (addedUsers > 0)
+                            Console.WriteLine(String.Format("Added {0} users to '{1}' on {2}", addedUsers, docNode.Name, server.Name));
                     }
                 }
             }
@@ -68,7 +75,6 @@ namespace qv_user_manager
             {
                 Console.WriteLine(ex.Message);
             }
-
         }
     }
 }

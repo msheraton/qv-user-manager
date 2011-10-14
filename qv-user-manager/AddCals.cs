@@ -44,7 +44,7 @@ namespace qv_user_manager
                         // Save changes
                         backendClient.SaveCALConfiguration(config);
 
-                        // Get number of users BEFORE modifications
+                        // Get number of users AFTER modifications
                         var addedCals = config.NamedCALs.AssignedCALs.Count - numberOfCals;
 
                         if (addedCals > 0)
