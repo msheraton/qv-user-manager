@@ -2,6 +2,7 @@
 ----------
 Adding of DMS users used to remove all existing users first. If this is desired execute with --remove flag first.
 Adding of DMS users now checks if a username exists before adding it.
+Changed --document parameter to use separators (;,|) to specify multiple documents (see examples).
 
 2011-10-03
 ----------

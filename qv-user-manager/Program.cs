@@ -11,7 +11,7 @@ namespace qv_user_manager
             var list = "";
             var add = "";
             var remove = "";
-            var documents = new List<string>();
+            var docs = "";
             var prefix = "";
             var version = false;
             var help = false;
@@ -22,7 +22,7 @@ namespace qv_user_manager
                     { "l|list=", "List CALs or usernames to console [{CAL|DMS}]", v => list = v.ToLower() },
                     { "a|add=", "Add users or assign CALs [{CAL|DMS}]", v => add = v.ToLower() },
                     { "r|remove=", "Remove specified users or inactive CALs [{CAL|DMS}]", v => remove = v.ToLower() },
-                    { "d|document=", "QlikView document(s) to perform actions on", v => documents.Add(v.ToLower()) },
+                    { "d|document=", "QlikView document(s) to perform actions on", v => docs = v.ToLower() },
                     { "p|prefix=", "Use specified prefix for all users and CALs", v => prefix = v },
                     { "V|version", "Show version information", v => version = v != null },
                     { "?|h|help", "Show usage information", v => help = v != null },
@@ -60,12 +60,15 @@ namespace qv_user_manager
                 return;
             }
 
+            // Split list of multiple documents
+            var documents = new List<string>(docs.Split(new[] { ';', ',', '|', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries));
+
             var users = new List<string>();
 
             // Look for console redirection or piped data
             try
             {
-                var isKeyAvailable = System.Console.KeyAvailable;
+                var isKeyAvailable = Console.KeyAvailable;
             }
             catch (InvalidOperationException)
             {
