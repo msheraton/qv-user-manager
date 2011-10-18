@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NDesk.Options;
 
 namespace qv_user_manager
@@ -44,7 +45,7 @@ namespace qv_user_manager
 
                 if (version)
                 {
-                    Console.WriteLine("qv-user-manager 20111014\n");
+                    Console.WriteLine("qv-user-manager 20111018\n");
                     Console.WriteLine("This program comes with ABSOLUTELY NO WARRANTY.");
                     Console.WriteLine("This is free software, and you are welcome to redistribute it");
                     Console.WriteLine("under certain conditions.\n");
@@ -63,6 +64,9 @@ namespace qv_user_manager
             // Split list of multiple documents
             var documents = new List<string>(docs.Split(new[] { ';', ',', '|', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries));
 
+            // Remove possible duplicate documents
+            documents = documents.Distinct().ToList();
+
             var users = new List<string>();
 
             // Look for console redirection or piped data
@@ -78,6 +82,9 @@ namespace qv_user_manager
                     users.Add(prefix + s.Trim());
                 }
             }
+
+            // Remove possible duplicate users
+            users = users.Distinct().ToList();
 
             switch (remove)
             {

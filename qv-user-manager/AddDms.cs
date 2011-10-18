@@ -35,28 +35,20 @@ namespace qv_user_manager
                         // Get authorization metadata
                         var metaData = backendClient.GetDocumentMetaData(docNode, DocumentMetaDataScope.Authorization);
 
+                        // Filter users already in DMS from the supplied list of users to avoid duplicates
+                        var uniqueUsers = users.Except(metaData.Authorization.Access.Select(user => user.UserName).ToList());
+
                         // Get number of users on each document
                         var numberOfUsers = metaData.Authorization.Access.Count;
 
                         // Add new users
-                        foreach (var user in users.Select(u => new DocumentAccessEntry
+                        foreach (var user in uniqueUsers.Select(u => new DocumentAccessEntry
                         {
                             UserName = u,
                             AccessMode = DocumentAccessEntryMode.Always,
                             DayOfWeekConstraints = new List<DayOfWeek>()
                         }))
                         {
-                            var exist = false;
-
-                            var dmsuser = metaData.Authorization.Access.ToList();
-
-                            var user1 = user.UserName.ToLower();
-
-                            // Check if the username exists already
-                            foreach (var current in dmsuser.Where(current => current.UserName.ToLower() == user1))
-                                exist = true;
-
-                            if (!exist)
                                 metaData.Authorization.Access.Add(user);
                         }
 
