@@ -47,8 +47,10 @@ namespace qv_user_manager
                         // Get number of users AFTER modifications
                         var addedCals = config.NamedCALs.AssignedCALs.Count - numberOfCals;
 
-                        if (addedCals > 0)
-                            Console.WriteLine(String.Format("Adding {0} CALs on {1}", addedCals, server.Name));
+                        if (addedCals <= 0)
+                            Console.WriteLine(String.Format("Nothing to add on {0}", server.Name));
+                        else
+                            Console.WriteLine(String.Format("Added {0} CALs on {1}", addedCals, server.Name));
 
                         var inLicense = config.NamedCALs.InLicense;
                         var assigned = config.NamedCALs.Assigned;
@@ -96,7 +98,7 @@ namespace qv_user_manager
                             // Save changes
                             backendClient.SaveDocumentMetaData(metaData);
 
-                            Console.WriteLine(String.Format("Added {0} document CALs to '{1}' on {2}", users.Count(), docNode.Name, server.Name));
+                            Console.WriteLine(String.Format("Added {0} Document CALs to '{1}' on {2}", users.Count(), docNode.Name, server.Name));
                         }
                     }
                 }

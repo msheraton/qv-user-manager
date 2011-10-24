@@ -45,7 +45,9 @@ namespace qv_user_manager
                     // Get number of users BEFORE modifications
                     var removedUsers = numberOfUsers - config.NamedCALs.AssignedCALs.Count;
 
-                    if (removedUsers > 0)
+                    if (removedUsers <= 0)
+                        Console.WriteLine(String.Format("No CALs to remove on {0}", server.Name));
+                    else
                         Console.WriteLine(String.Format("Removed {0} CALs on {1}", removedUsers, server.Name));
 
                     /**********************
@@ -73,7 +75,9 @@ namespace qv_user_manager
                         // Get number of users AFTER modifications
                         removedUsers = numberOfUsers - metaData.Licensing.AssignedCALs.Count;
 
-                        if (removedUsers > 0)
+                        if (removedUsers <= 0)
+                            Console.WriteLine(String.Format("No Document CALs to remove from '{0}' on {1}", docNode.Name, server.Name));
+                        else
                             Console.WriteLine(String.Format("Removed {0} Document CALs from '{1}' on {2}", removedUsers, docNode.Name, server.Name));
                     }
                 }

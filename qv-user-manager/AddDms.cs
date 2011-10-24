@@ -49,7 +49,7 @@ namespace qv_user_manager
                             DayOfWeekConstraints = new List<DayOfWeek>()
                         }))
                         {
-                                metaData.Authorization.Access.Add(user);
+                            metaData.Authorization.Access.Add(user);
                         }
 
                         // Save changes
@@ -58,7 +58,9 @@ namespace qv_user_manager
                         // Get number of users AFTER modifications
                         var addedUsers = metaData.Authorization.Access.Count - numberOfUsers;
 
-                        if (addedUsers > 0)
+                        if (addedUsers <= 0)
+                            Console.WriteLine(String.Format("Nothing to add to '{0}' on {1}", docNode.Name, server.Name));
+                        else
                             Console.WriteLine(String.Format("Added {0} users to '{1}' on {2}", addedUsers, docNode.Name, server.Name));
                     }
                 }

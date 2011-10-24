@@ -57,7 +57,9 @@ namespace qv_user_manager
                         // Get number of users AFTER modifications
                         var removedUsers = numberOfUsers - metaData.Authorization.Access.Count;
 
-                        if (removedUsers > 0)
+                        if (removedUsers <= 0)
+                            Console.WriteLine(String.Format("Nothing to remove from '{0}' on {1}", docNode.Name, server.Name));
+                        else
                             Console.WriteLine(String.Format("Removed {0} users from '{1}' on {2}", removedUsers, docNode.Name, server.Name));
                     }
                 }
