@@ -1,3 +1,7 @@
+2011-10-25
+----------
+-Changed default server address and added verification to see if it has been changed.
+
 2011-10-24
 ----------
 -Added status messages if there was nothing to be done on a specific document or server.

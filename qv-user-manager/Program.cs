@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.ServiceModel.Configuration;
 using NDesk.Options;
 
 namespace qv_user_manager
 {
-    partial class Program
+    class Program
     {
         static void Main(string[] args)
         {
+            if (!VerifyServerConfig())
+                return;
+
             var list = "";
             var add = "";
             var remove = "";
@@ -45,7 +50,7 @@ namespace qv_user_manager
 
                 if (version)
                 {
-                    Console.WriteLine("qv-user-manager 20111024\n");
+                    Console.WriteLine("qv-user-manager 20111025\n");
                     Console.WriteLine("This program comes with ABSOLUTELY NO WARRANTY.");
                     Console.WriteLine("This is free software, and you are welcome to redistribute it");
                     Console.WriteLine("under certain conditions.\n");
@@ -89,32 +94,67 @@ namespace qv_user_manager
             switch (remove)
             {
                 case "dms":
-                    RemoveDms(documents, users);
+                    DocumentMetadataService.Remove(documents, users);
                     break;
                 case "cal":
-                    RemoveCals();
+                    ClientAccessLicenses.Remove();
                     break;
             }
 
             switch (add)
             {
                 case "dms":
-                    AddDms(documents, users);
+                    DocumentMetadataService.Add(documents, users);
                     break;
                 case "cal":
-                    AddCals(documents, users);
+                    ClientAccessLicenses.Add(documents, users);
                     break;
             }
 
             switch (list)
             {
                 case "dms":
-                    ListDms(documents);
+                    DocumentMetadataService.List(documents);
                     break;
                 case "cal":
-                    ListCals();
+                    ClientAccessLicenses.List();
                     break;
             }
+        }
+
+        /// <summary>
+        /// Verify that the user has changed the server settings
+        /// </summary>
+        /// <returns></returns>
+        private static bool VerifyServerConfig()
+        {
+            try
+            {
+                var clientSection = ConfigurationManager.GetSection("system.serviceModel/client") as ClientSection;
+
+                var propertyInformation = clientSection.ElementInformation.Properties[string.Empty];
+
+                var endpointCollection = propertyInformation.Value as ChannelEndpointElementCollection;
+
+                var address = endpointCollection[0].Address.ToString();
+
+                if (address.Contains("your-server-address"))
+                {
+                    Console.WriteLine("The server address needs to be configured in the qv-user-manager.config file." + System.Environment.NewLine);
+                    
+                    Console.WriteLine("Current value: " + address);
+
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+
+                return false;
+            }
+
+            return true;
         }
     }
 }
