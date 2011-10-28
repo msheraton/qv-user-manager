@@ -142,7 +142,6 @@ namespace qv_user_manager
             {
                 Console.WriteLine(ex.Message);
             }
-
         }
 
         /// <summary>
@@ -211,7 +210,68 @@ namespace qv_user_manager
             {
                 Console.WriteLine(ex.Message);
             }
+        }
 
+        public static void DocInfo(ICollection<string> documents)
+        {
+            try
+            {
+                // Initiate backend client
+                var backendClient = new QMSBackendClient();
+
+                // Get a time limited service key
+                ServiceKeyClientMessageInspector.ServiceKey = backendClient.GetTimeLimitedServiceKey();
+
+                // Get available QlikView Servers
+                var serviceList = backendClient.GetServices(ServiceTypes.QlikViewServer);
+
+                Console.WriteLine("Document;Server;Preloaded;LoadedDays;LoadedBetween;Plugin;Mobile;AjaxZfc;Download;Category;SourceDocument");
+
+                // Loop through available servers
+                foreach (var server in serviceList)
+                {
+                    // Get documents on each server
+                    var userDocuments = backendClient.GetUserDocuments(server.ID);
+
+                    // Loop through available documents
+                    foreach (var docNode in userDocuments)
+                    {
+                        if (documents.Count != 0 && !documents.Contains(docNode.Name.ToLower())) continue;
+
+                        // Get authorization meta data
+                        var metaData = backendClient.GetDocumentMetaData(docNode, DocumentMetaDataScope.All);
+
+                        // Check if PreloadMode is Restricted, if so get the dates
+                        var preloadMode = metaData.Server.Preload.Mode.ToString();
+                        var loadedDays = "";
+                        var between = "";
+                        if (preloadMode == "Restricted")
+                        {
+                            loadedDays = metaData.Server.Preload.DaysOfWeek.Aggregate(loadedDays, (current, dayOfWeek) => current + (dayOfWeek.ToString().Substring(0, 2) + " ")).Trim();
+                            between = metaData.Server.Preload.StartTime.ToShortTimeString() + "-" + metaData.Server.Preload.EndTime.ToShortTimeString();
+                        }
+
+                        // Check which clients are enabled
+                        var accessMethods = metaData.Server.Access.Methods.ToString();
+                        var pluginClient = accessMethods.Contains("PluginClient") ? 1 : 0;
+                        var ajaxClient = accessMethods.Contains("ZeroFootprintClient") ? 1 : 0;
+                        var download = accessMethods.Contains("Download") ? 1 : 0;
+                        var mobileClient = accessMethods.Contains("MobileClient") ? 1 : 0;
+
+                        // Check if we have subfolders
+                        var relativePath = docNode.RelativePath;
+                        if (relativePath != "")
+                            relativePath += "\\";
+
+                        Console.WriteLine(String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10}", relativePath + docNode.Name,
+                                                        server.Name, preloadMode, loadedDays, between, pluginClient, mobileClient, ajaxClient, download, metaData.DocumentInfo.Category, metaData.DocumentInfo.SourceName));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

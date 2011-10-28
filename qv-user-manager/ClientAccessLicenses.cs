@@ -267,5 +267,49 @@ namespace qv_user_manager
                 Console.WriteLine(ex.Message);
             }
         }
+
+        /// <summary>
+        /// List information about CALs
+        /// </summary>
+        public static void CalInfo()
+        {
+            try
+            {
+                // Initiate backend client
+                var backendClient = new QMSBackendClient();
+
+                // Get a time limited service key
+                ServiceKeyClientMessageInspector.ServiceKey = backendClient.GetTimeLimitedServiceKey();
+
+                // Get available QlikView Servers
+                var serviceList = backendClient.GetServices(ServiceTypes.QlikViewServer);
+
+                Console.WriteLine("Server;NamedAssigned;NamedInLicense;NamedLeased;NamedAllowDynamic;NamedAllowLease;DocAssigned;DocInLicense;SessionAvailable;SessionInLicense;UsageAvailable;UsageInLicense");
+
+                // Loop through available servers
+                foreach (var server in serviceList)
+                {
+                    // Get Named CALs
+                    var config = backendClient.GetCALConfiguration(server.ID, CALConfigurationScope.All);
+
+                    Console.Write(server.Name + ";");
+                    Console.Write(config.NamedCALs.AssignedCALs.Count + ";");
+                    Console.Write(config.NamedCALs.InLicense + ";");
+                    Console.Write(config.NamedCALs.LeasedCALs.Count + ";");
+                    Console.Write(config.NamedCALs.AllowDynamicAssignment + ";");
+                    Console.Write(config.NamedCALs.AllowLicenseLease + ";");
+                    Console.Write(config.DocumentCALs.Assigned + ";");
+                    Console.Write(config.DocumentCALs.InLicense + ";");
+                    Console.Write(config.SessionCALs.Available + ";");
+                    Console.Write(config.SessionCALs.InLicense + ";");
+                    Console.Write(config.UsageCALs.Available + ";");
+                    Console.WriteLine(config.UsageCALs.InLicense);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }

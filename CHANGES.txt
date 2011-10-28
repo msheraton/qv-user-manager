@@ -1,3 +1,9 @@
+2011-10-28
+----------
+-Added '--list docs' and '--list calinfo' parameters to get document and license information from QVS.
+-The binary download now contains a simple QlikView application to demonstrate some of the data that can be read.
+-Introduced exit codes if something went wrong, to begin with it only checks the server address.
+
 2011-10-25
 ----------
 -Changed default server address and added verification to see if it has been changed.

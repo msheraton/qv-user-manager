@@ -14,13 +14,13 @@ Help screen
 	Handles QlikView CALs and DMS user authorizations.
 
 	Options:
-	  -l, --list=CAL|DMS         List CALs or usernames to console [CAL|DMS]
+	  -l, --list=CAL|DMS|DOCS    List CALs, users or documents [CAL|DMS|DOCS]
 	  -a, --add=CAL|DMS          Add users or assign CALs [CAL|DMS]
 	  -r, --remove=CAL|DMS       Remove specified users or inactive CALs [CAL|DMS]
 	  -d, --document=VALUE       QlikView document(s) to perform actions on
 	  -p, --prefix=VALUE         Use specified prefix for all users and CALs
 	  -V, --version              Show version information
-	  -?, -h, --help             Show usage information
+	  -?, -h, --help             Show usage information	
 
 	Options can be in the form -option, /option or --long-option
 

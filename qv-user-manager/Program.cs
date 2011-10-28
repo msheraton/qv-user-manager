@@ -33,10 +33,19 @@ namespace qv_user_manager
 {
     class Program
     {
+        enum ExitCode
+        {
+            Success = 0,
+            Error = 1
+        }
+
         static void Main(string[] args)
         {
             if (!VerifyServerConfig())
+            {
+                Environment.ExitCode = (int)ExitCode.Error;
                 return;
+            }
 
             var list = "";
             var add = "";
@@ -49,7 +58,7 @@ namespace qv_user_manager
             try
             {
                 var p = new OptionSet {
-                    { "l|list=", "List CALs or usernames to console [{CAL|DMS}]", v => list = v.ToLower() },
+                    { "l|list=", "List CALs, users or documents [{CAL|DMS|DOCS}]", v => list = v.ToLower() },
                     { "a|add=", "Add users or assign CALs [{CAL|DMS}]", v => add = v.ToLower() },
                     { "r|remove=", "Remove specified users or inactive CALs [{CAL|DMS}]", v => remove = v.ToLower() },
                     { "d|document=", "QlikView document(s) to perform actions on", v => docs = v.ToLower() },
@@ -74,7 +83,7 @@ namespace qv_user_manager
 
                 if (version)
                 {
-                    Console.WriteLine("qv-user-manager 20111025\n");
+                    Console.WriteLine("qv-user-manager 20111028\n");
                     Console.WriteLine("This program comes with ABSOLUTELY NO WARRANTY.");
                     Console.WriteLine("This is free software, and you are welcome to redistribute it");
                     Console.WriteLine("under certain conditions.\n");
@@ -143,7 +152,15 @@ namespace qv_user_manager
                 case "cal":
                     ClientAccessLicenses.List();
                     break;
+                case "docs":
+                    DocumentMetadataService.DocInfo(documents);
+                    break;
+                case "calinfo":
+                    ClientAccessLicenses.CalInfo();
+                    break;
             }
+
+            Environment.ExitCode = (int)ExitCode.Success;
         }
 
         /// <summary>
