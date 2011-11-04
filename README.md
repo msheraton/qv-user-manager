@@ -85,8 +85,8 @@ Example for removing CALs:
 
 PowerShell examples:
 
-	:: Add CALs from Active Directory (edit the filter in the script file if necessary)
-	.\extras\get-adusers.ps1 "LDAP://OU=Stockholm,DC=qliktech,DC=com" | .\qv-user-manager.exe --add cal --prefix QTSEL\
+	:: Add CALs from Active Directory (script takes group and property as parameters)
+	.\extras\PSEnumGroup.ps1 "CN=DL- Nordic All,OU=DL,OU=Activate Groups,DC=qliktech,DC=com" sAMAccountName | .\qv-user-manager.exe --add cal --prefix QTSEL\
 
 	:: Add Document CALs from an SQL Server (edit connection string in the script file)
 	.\extras\get-sqlusers.ps1 "SELECT users FROM table" | .\qv-user-manager.exe --add cal --document Films.qvw --prefix QTSEL\
